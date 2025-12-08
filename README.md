@@ -1,3 +1,5 @@
+![AWACS Auto-Respawn System](awacs_cover.png)
+
 # AWACS Auto-Respawn System for DCS World
 
 Sistema avançado de respawn automático para aeronaves AWACS no DCS World usando o framework MOOSE.
