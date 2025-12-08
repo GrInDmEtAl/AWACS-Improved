@@ -1,3 +1,6 @@
+-- FUNCAO GENERICA PARA RESPAWN INFINITO DE AWACS + ESCOLTA
+-- Versao melhorada com tratamento de erros e logging
+
 ---@class AwacsConfig
 ---@field coalition string Coalizão ("BLUE" ou "RED")
 ---@field name string Nome do template do AWACS no Mission Editor
