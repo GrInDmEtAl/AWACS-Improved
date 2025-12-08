@@ -1,0 +1,16 @@
+---@class AwacsConfig
+---@field coalition string Coalizão ("BLUE" ou "RED")
+---@field name string Nome do template do AWACS no Mission Editor
+---@field escortName? string Nome do template da escolta (opcional)
+---@field zoneName string Nome da zona de patrulha
+---@field altitude? number Altitude em pés (padrão: 25000)
+---@field speed? number Velocidade em knots (padrão: 320)
+---@field heading? number Heading em graus (padrão: 300)
+---@field orbitRadius? number Raio da órbita em NM (padrão: 30)
+---@field tacan? table TACAN config {channel, id}
+---@field radio? number Frequência de rádio em MHz
+---@field delay? number Delay de respawn em segundos (padrão: 300)
+---@field engageRange? number Range de engajamento da escolta em NM (padrão: 30)
+---@field callsign? number Callsign do AWACS
+---@field immortal? boolean Se true, AWACS não pode ser destruído (padrão: false)
+---@field respawnOnEngineShutdown? boolean Respawn se motores forem desligados (padrão: false)
