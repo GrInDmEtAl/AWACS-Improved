@@ -161,14 +161,6 @@ local grupo = BlueAwacs.GetActiveGroup()
 BlueAwacs.Stop()
 ```
 
-## Estrutura de Arquivos
-
-```
-Scripts e projetos/
-├── Awacs_improved.lua    # Script principal
-└── README_AWACS.md       # Este arquivo
-```
-
 ## Troubleshooting
 
 ### AWACS não spawna
