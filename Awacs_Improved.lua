@@ -1,6 +1,7 @@
 ----------------------------------------------------------------
 -- FUNCAO GENERICA PARA RESPAWN INFINITO DE AWACS + ESCOLTA
 -- Versao melhorada com tratamento de erros e logging
+-- https://github.com/GrInDmEtAl/AWACS-Improved
 ----------------------------------------------------------------
 
 ---@class AwacsConfig
