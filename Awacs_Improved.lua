@@ -139,22 +139,50 @@ function AutoRespawnAwacsWithEscort(config)
         -- Spawna escolta
         SpawnEscort(fg_awacs)
 
-        -- Monitor de destruição (para logging)
-        spawnedGroup:HandleEvent(EVENTS.Dead, function(eventData)
-            destroyCount = destroyCount + 1
-            local coalitionSide = config.coalition == "BLUE" and coalition.side.BLUE or coalition.side.RED
-            env.info(string.format("[AWACS] %s DESTRUÍDO (destruições: %d) - Respawn em %d segundos", 
-                config.name, destroyCount, delay))
-            MESSAGE:New(config.coalition .. " AWACS - " .. config.name .. " foi destruído! Respawn em " .. 
-                math.floor(delay/60) .. " minutos.", 10, "WARNING"):ToCoalition(coalitionSide)
-        end)
+        -- Monitor de destruição usando handler global de eventos (mais confiável)
+        local awacsGroupName = spawnedGroup.GroupName
+        local DeadEventHandler = {}
+        function DeadEventHandler:onEvent(event)
+            if event.id == world.event.S_EVENT_DEAD or event.id == world.event.S_EVENT_CRASH then
+                if event.initiator then
+                    -- Pega o grupo da unidade destruída
+                    local unit = event.initiator
+                    local unitGroup = unit:getGroup()
+                    
+                    if unitGroup and unitGroup:getName() == awacsGroupName then
+                        destroyCount = destroyCount + 1
+                        local coalitionSide = config.coalition == "BLUE" and coalition.side.BLUE or coalition.side.RED
+                        env.info(string.format("[AWACS] %s DESTRUIDO (destruicoes: %d) - Respawn em %d segundos", 
+                            config.name, destroyCount, delay))
+                        MESSAGE:New(config.coalition .. " AWACS - " .. config.name .. " foi destruido! Respawn em " .. 
+                            math.floor(delay/60) .. " minutos.", 15):ToCoalition(coalitionSide)
+                        
+                        -- Remove o handler após detectar destruição
+                        world.removeEventHandler(DeadEventHandler)
+                    end
+                end
+            end
+        end
+        world.addEventHandler(DeadEventHandler)
 
         -- Monitor de engine shutdown (opcional)
         if respawnOnEngineShutdown then
-            spawnedGroup:HandleEvent(EVENTS.EngineShutdown, function(eventData)
-                env.warning(string.format("[AWACS] %s motores desligados - Forçando respawn", config.name))
-                spawnedGroup:Destroy()
-            end)
+            local EngineEventHandler = {}
+            function EngineEventHandler:onEvent(event)
+                if event.id == world.event.S_EVENT_ENGINE_SHUTDOWN then
+                    if event.initiator then
+                        local unit = event.initiator
+                        local unitGroup = unit:getGroup()
+                        
+                        if unitGroup and unitGroup:getName() == awacsGroupName then
+                            env.warning(string.format("[AWACS] %s motores desligados - Forcando respawn", config.name))
+                            spawnedGroup:Destroy()
+                            world.removeEventHandler(EngineEventHandler)
+                        end
+                    end
+                end
+            end
+            world.addEventHandler(EngineEventHandler)
         end
     end)
 
