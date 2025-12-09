@@ -2,6 +2,8 @@
 
 # AWACS Auto-Respawn System for DCS World
 
+ED Files Download link: https://www.digitalcombatsimulator.com/en/files/3348015/
+
 Sistema avançado de respawn automático para aeronaves AWACS no DCS World usando o framework MOOSE.
 
 ## Características
