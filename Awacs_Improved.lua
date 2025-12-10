@@ -144,7 +144,7 @@ function AutoRespawnAwacsWithEscort(config)
         local DeadEventHandler = {}
         function DeadEventHandler:onEvent(event)
             if event.id == world.event.S_EVENT_DEAD or event.id == world.event.S_EVENT_CRASH then
-                if event.initiator then
+                if event.initiator and event.initiator.getGroup then
                     -- Pega o grupo da unidade destruída
                     local unit = event.initiator
                     local unitGroup = unit:getGroup()
@@ -170,7 +170,7 @@ function AutoRespawnAwacsWithEscort(config)
             local EngineEventHandler = {}
             function EngineEventHandler:onEvent(event)
                 if event.id == world.event.S_EVENT_ENGINE_SHUTDOWN then
-                    if event.initiator then
+                    if event.initiator and event.initiator.getGroup then
                         local unit = event.initiator
                         local unitGroup = unit:getGroup()
                         
