@@ -20,6 +20,7 @@
 ---@field callsign? number Callsign do AWACS
 ---@field immortal? boolean Se true, AWACS não pode ser destruído (padrão: false)
 ---@field respawnOnEngineShutdown? boolean Respawn se motores forem desligados (padrão: false)
+---@field firstSpawnDelay? number Delay para o primeiro spawn em segundos (padrão: 0 - imediato)
 
 function AutoRespawnAwacsWithEscort(config)
     -- Validação de parâmetros obrigatórios
@@ -45,6 +46,7 @@ function AutoRespawnAwacsWithEscort(config)
     local orbitRadius  = config.orbitRadius or 30
     local immortal     = config.immortal or false
     local respawnOnEngineShutdown = config.respawnOnEngineShutdown or false
+    local firstSpawnDelay = config.firstSpawnDelay or 0
 
     -- Contador de spawns (para estatísticas)
     local spawnCount = 0
@@ -189,10 +191,17 @@ function AutoRespawnAwacsWithEscort(config)
     -------------------------------------------------------------
     -- Respawn automático (loop infinito)
     -------------------------------------------------------------
-    spawnAwacs:SpawnScheduled(delay, 0.1)
+    local function StartSpawnSchedule()
+        spawnAwacs:SpawnScheduled(delay, 0.1)
+        env.info(string.format("[AWACS] Sistema de respawn automático iniciado para %s (delay: %ds)", config.name, delay))
+    end
 
-    env.info(string.format("[AWACS] Sistema de respawn automático iniciado para %s (delay: %ds)", 
-        config.name, delay))
+    if firstSpawnDelay > 0 then
+        SCHEDULER:New(nil, StartSpawnSchedule, {}, firstSpawnDelay)
+        env.info(string.format("[AWACS] Primeiro spawn de %s agendado para %d segundos.", config.name, firstSpawnDelay))
+    else
+        StartSpawnSchedule()
+    end
 
     -- Retorna tabela com funções de controle
     return {
@@ -225,7 +234,8 @@ local BlueAwacs = AutoRespawnAwacsWithEscort({
     engageRange  = 30,
     callsign     = CALLSIGN.AWACS.Overlord,
     immortal     = false,  -- Mude para true se quiser AWACS indestrutível
-    respawnOnEngineShutdown = false
+    respawnOnEngineShutdown = false,
+    firstSpawnDelay = 25 -- Exemplo: 10 segundos para o primeiro spawn
 })
 
 ----------------------------------------------------------------
@@ -246,7 +256,8 @@ local RedAwacs = AutoRespawnAwacsWithEscort({
     engageRange  = 32,
     callsign     = CALLSIGN.AWACS.Focus,
     immortal     = false,
-    respawnOnEngineShutdown = false
+    respawnOnEngineShutdown = false,
+    firstSpawnDelay = 30
 })
 
 ----------------------------------------------------------------
