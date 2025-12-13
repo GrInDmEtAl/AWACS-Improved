@@ -1,8 +1,6 @@
 ![AWACS Auto-Respawn System](awacs_cover.png)
-
-# AWACS Auto-Respawn System for DCS World
-
 ED Files Download link: https://www.digitalcombatsimulator.com/en/files/3348015/
+# AWACS Auto-Respawn System for DCS World
 
 Sistema avançado de respawn automático para aeronaves AWACS no DCS World usando o framework MOOSE.
 
@@ -90,7 +88,8 @@ E descomente as linhas `escortName` no script.
     engageRange  = 30,               -- Range de engajamento da escolta em NM
     callsign     = CALLSIGN.AWACS.Overlord, -- Callsign do AWACS
     immortal     = false,            -- AWACS indestrutível (true/false)
-    respawnOnEngineShutdown = false  -- Respawn se motores desligarem
+    respawnOnEngineShutdown = false, -- Respawn se motores desligarem
+    firstSpawnDelay = 10             -- Delay inicial (em segundos) para o primeiro spawn
 }
 ```
 
@@ -211,8 +210,10 @@ Este script é fornecido "como está", sem garantias de qualquer tipo.
 
 ## Changelog
 
-### Versão Atual (Improved)
+### Versão Atual (Improved 1.1)
 
+- ✅ **Novo**: Parâmetro `firstSpawnDelay` para controlar o tempo do primeiro spawn
+- ✅ **Melhoria**: Sistema de eventos de destruição usando API nativa do DCS (mais confiável)
 - ✅ Sistema de respawn automático infinito
 - ✅ Menu F10 separado por coalizão
 - ✅ Mensagens específicas por coalizão
